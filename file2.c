@@ -19,15 +19,20 @@ int main(int argc, char const *argv[])
         _exit(1);
     }
 
-    printf("Waiting for child proccess \n");
-
+    if(pid > 0) {
+        printf("Waiting for child proccess \n");
+    }
+    
     int status;
     if (waitpid(pid, &status, 0) < 0) {
         perror("waitpid");
         return 1;
     }
 
-    printf("End waiting \n");
+    if (pid > 0) {
+        waitpid(pid, &status, 0);
+        printf("End waiting\n");
+    }
 
     if(WIFEXITED(status)) {
         printf("The proccess was ended at %d code! \n", WEXITSTATUS(status));

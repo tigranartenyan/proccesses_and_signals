@@ -20,7 +20,9 @@ int main(int argc, char const *argv[])
         _exit(1);
     }
 
-    wait(NULL);
+    if(pid > 0) {
+        wait(NULL);
+    }
 
     return 0;
 }

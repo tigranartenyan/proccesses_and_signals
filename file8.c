@@ -14,11 +14,6 @@ void signal_handler(int signal) {
 
 int main(int argc, char const *argv[])
 {
-    if (signal(SIGUSR1, signal_handler) == SIG_ERR) {
-        perror("signal");
-        return 1;
-    }
-
     pid_t pid = fork();
 
     if(pid < 0) {
@@ -30,7 +25,12 @@ int main(int argc, char const *argv[])
         sleep(3);
         kill(getppid(), SIGUSR1);
         exit(0);
-    } else {
+    } 
+    if(pid > 0) {
+        if (signal(SIGUSR1, signal_handler) == SIG_ERR) {
+            perror("signal");
+            return 1;
+        }
         printf("Parent waiting for signal... \n");
         pause();
     }
